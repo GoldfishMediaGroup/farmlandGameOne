@@ -837,46 +837,94 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
     
-    window.addEventListener('resize', () => {
-      if (animationCompleted) return;
+    // window.addEventListener('resize', () => {
+    //   if (animationCompleted) return;
       
-      // Отменяем таймер перезапуска при ресайзе
-      if (restartTimeoutId) {
-        clearTimeout(restartTimeoutId);
-        restartTimeoutId = null;
-      }
+    //   // Отменяем таймер перезапуска при ресайзе
+    //   if (restartTimeoutId) {
+    //     clearTimeout(restartTimeoutId);
+    //     restartTimeoutId = null;
+    //   }
       
-      // Отменяем текущую анимацию
-      if (animationId) {
-        cancelAnimationFrame(animationId);
-        animationId = null;
-      }
+    //   // Отменяем текущую анимацию
+    //   if (animationId) {
+    //     cancelAnimationFrame(animationId);
+    //     animationId = null;
+    //   }
       
-      // ПЕРЕОПРЕДЕЛЯЕМ РАЗМЕРЫ ПРИ ИЗМЕНЕНИИ ОКНА
-      const newAnimationSize = getAnimationSize();
-      const newSnowTrailsSize = getSnowTrailsSize();
-      const newMovementSpeeds = getMovementSpeeds();
+    //   // ПЕРЕОПРЕДЕЛЯЕМ РАЗМЕРЫ ПРИ ИЗМЕНЕНИИ ОКНА
+    //   const newAnimationSize = getAnimationSize();
+    //   const newSnowTrailsSize = getSnowTrailsSize();
+    //   const newMovementSpeeds = getMovementSpeeds();
       
-      // Обновляем размеры контейнеров
-      mainContainer.style.width = `${newAnimationSize.width}px`;
-      mainContainer.style.height = `${newAnimationSize.height}px`;
+    //   // Обновляем размеры контейнеров
+    //   mainContainer.style.width = `${newAnimationSize.width}px`;
+    //   mainContainer.style.height = `${newAnimationSize.height}px`;
       
-      if (snowContainer) {
-        snowContainer.style.width = `${newSnowTrailsSize.width}px`;
-        snowContainer.style.height = `${newSnowTrailsSize.height}px`;
-      }
+    //   if (snowContainer) {
+    //     snowContainer.style.width = `${newSnowTrailsSize.width}px`;
+    //     snowContainer.style.height = `${newSnowTrailsSize.height}px`;
+    //   }
       
-      // Обновляем скорости
-      horizontalSpeed = newMovementSpeeds.horizontalSpeed;
-      verticalSpeed = newMovementSpeeds.verticalSpeed;
+    //   // Обновляем скорости
+    //   horizontalSpeed = newMovementSpeeds.horizontalSpeed;
+    //   verticalSpeed = newMovementSpeeds.verticalSpeed;
     
       
-      // Сбрасываем флаг перезапуска
-      isRestarting = false;
+    //   // Сбрасываем флаг перезапуска
+    //   isRestarting = false;
       
-      // Перезапускаем движение с текущей позиции
-      lastTimestamp = null;
-      animationId = requestAnimationFrame(animate);
-    });
+    //   // Перезапускаем движение с текущей позиции
+    //   lastTimestamp = null;
+    //   animationId = requestAnimationFrame(animate);
+    // });
+
+    // В начало startMovementAnimation добавь:
+let currentWindowWidth = window.innerWidth;
+
+// Обновленный обработчик
+window.addEventListener('resize', () => {
+  if (animationCompleted) return;
+
+  const newWidth = window.innerWidth;
+
+  // Если ширина не изменилась — выходим (игнорируем изменение высоты)
+  if (newWidth === currentWindowWidth) return;
+
+  // Если ширина изменилась, обновляем эталонное значение
+  currentWindowWidth = newWidth;
+
+  // Отменяем таймер перезапуска
+  if (restartTimeoutId) {
+    clearTimeout(restartTimeoutId);
+    restartTimeoutId = null;
+  }
+
+  // Обновляем параметры размеров и скоростей
+  const newAnimationSize = getAnimationSize();
+  const newSnowTrailsSize = getSnowTrailsSize();
+  const newMovementSpeeds = getMovementSpeeds();
+
+  // Обновляем стили контейнеров
+  mainContainer.style.width = `${newAnimationSize.width}px`;
+  mainContainer.style.height = `${newAnimationSize.height}px`;
+
+  if (snowContainer) {
+    snowContainer.style.width = `${newSnowTrailsSize.width}px`;
+    snowContainer.style.height = `${newSnowTrailsSize.height}px`;
+  }
+
+  // Обновляем переменные скоростей (убедись, что они объявлены через let, а не const)
+  horizontalSpeed = newMovementSpeeds.horizontalSpeed;
+  verticalSpeed = newMovementSpeeds.verticalSpeed;
+
+  // Сбрасываем флаг перезапуска, если он висел
+  isRestarting = false;
+
+  // Перезапускаем цикл анимации
+  if (animationId) cancelAnimationFrame(animationId);
+  lastTimestamp = null;
+  animationId = requestAnimationFrame(animate);
+});
   }
 });

@@ -6,12 +6,12 @@
       mobile: {
         src: "https://storage.yandexcloud.net/external-assets/tantum/modal-game/mobile.mp4",
         type: "video/mp4",
-        pausePoints: [4, 10, 15, 20.5],
+        pausePoints: [4.3, 10, 15, 20.5],
       },
       desktop: {
         src: "https://storage.yandexcloud.net/external-assets/tantum/modal-game/desktop.mp4",
         type: "video/mp4",
-        pausePoints: [4, 10, 15, 20.5],
+        pausePoints: [4.3, 10, 15, 20.5],
       },
     },
     buttonStyles: {
@@ -468,7 +468,7 @@
     isVideoFinished = true;
 
     if (videoElement.duration > 0) {
-      videoElement.currentTime = videoElement.duration - 0.1;
+      // videoElement.currentTime = videoElement.duration - 0.1;
       videoElement.pause();
 
       setTimeout(() => {
