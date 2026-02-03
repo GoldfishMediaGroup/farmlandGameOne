@@ -217,16 +217,24 @@
       right: "10px",
       width: "30px",
       height: "30px",
+      display: 'flex',
+      flexShrink: 0,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
       backgroundColor: "rgba(0, 0, 0, 0.5)",
       color: "white",
       border: "none",
       borderRadius: "50%",
       cursor: "pointer",
       fontSize: "20px",
-      lineHeight: "30px",
+      lineHeight: "100%",
       textAlign: "center",
       zIndex: "1101",
       transition: "background-color 0.3s ease",
+      padding: 0,
+
+
     });
 
     closeButton.addEventListener("mouseenter", function () {
